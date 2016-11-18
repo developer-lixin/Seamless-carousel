@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body {
+				margin: 0;
+			}
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none
+			}
+			#wrap {
+				width: 240px;
+				height: 240px;
+				margin: 100px auto;
+				border: 1px solid #ADD8E6;
+			}
+			nav {
+				text-align: center;
+				margin: 10px 0;
+			}
+			#imgs {
+				position: relative;
+				height: 135px;
+				overflow: hidden;
+			}
+			#list {
+				transform-style: preserve-3d;
+				width: 240px;
+				height: 240px;
+				position: relative;
+				transform-origin: center center -207.85px;
+				transition: .5s;
+			}
+			#list li {
+				position: absolute;
+				left: 0;
+				top: 0;
+				transform-origin: center center -207.85px;
+			}
+			.active {
+				background: #666;
+				color: #FFFFFF;
+			}
+		</style>
+		<script src="../js/aTween.js"></script>
+		<script>
+		/* 3d变换 */
+			window.onload = function() {
+				var navs = document.querySelectorAll('nav');
+				var btns = navs[0].children;
+				var btns1 = navs[1].children;
+				var list = document.querySelector('#list');
+				var lis = list.children;
+				var now = 0;
+				for(var i= 0; i < lis.length; i++) {
+					lis[i].style.transform = "rotateY("+ i*60 +"deg)";
+					btns1[i].index = i;
+					btns1[i].onmouseover = function() {
+						var show = now%btns1.length;
+						show = show < 0?navs.length + show: show;
+						if(show == this.index) {
+							return;
+						}
+						var dis = this.index - show;
+						now += dis;
+						for(var i = 0; i < btns1.length; i++) {
+							btns1[i].className = "";
+						}
+						this.className = "active";
+						list.style.transform = "rotateY("+ (-now*60) +"deg)";
+					};
+				}
+				btns[1].onclick = function() {
+					now++;
+					var deg = -now*60;
+					list.style.transform = "rotateY("+deg+"deg)";
+					for(var i = 0; i < btns1.length; i++) {
+						btns1[i].className = "";
+					}
+					var show = now%btns1.length;
+					show = show < 0?navs.length + show: show;
+					btns1[show].className = 'active';
+				};
+				btns[0].onclick = function() {
+					now--;
+					var deg = -now*60;
+					list.style.transform = "rotateY("+deg+"deg)";
+					for(var i = 0; i < btns1.length; i++) {
+						btns1[i].className = "";
+					}
+					var show = now%btns1.length;
+					show = show < 0?navs.length + show: show;
+					btns1[show].className = 'active';
+				};
+			};
+		</script>
+	</head>
+	<body>
+		<div id="wrap">
+			<nav>
+				<input type="button" value="上一张"/>
+				<input type="button" value="下一张"/>
+			</nav>
+			<div id="imgs">
+				<ul id="list">
+					<li><img src="../img/1.jpg"/></li>
+					<li><img src="../img/2.png"/></li>
+					<li><img src="../img/3.jpg"/></li>
+					<li><img src="../img/4.jpg"/></li>
+					<li><img src="../img/5.png"/></li>
+					<li><img src="../img/6.jpg"/></li>
+				</ul>
+			</div>
+			<nav>
+				<input type="button" value="1" class="active"/>
+				<input type="button" value="2"/>
+				<input type="button" value="3"/>
+				<input type="button" value="4"/>
+				<input type="button" value="5"/>
+				<input type="button" value="6"/>
+			</nav>
+		</div>
+	</body>
+</html>
